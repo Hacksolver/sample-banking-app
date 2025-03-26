@@ -31,7 +31,7 @@ public class TransactionRestController {
     private final AccountService accountService;
     private final TransactionService transactionService;
 
-    private final Map<String, TransactionStatus> transactionStatusMap = new ConcurrentHashMap<>();
+
 
 
     @Autowired
@@ -120,30 +120,6 @@ public class TransactionRestController {
         });
 
         return errors;
-    }
-
-
-    // Add a new endpoint to check transaction status
-    @GetMapping(value = "/transactions/{transactionId}/status",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getTransactionStatus(
-            @PathVariable String transactionId) {
-        if (transactionStatusMap.containsKey(transactionId)) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("transactionId", transactionId);
-            response.put("status", transactionStatusMap.get(transactionId).toString());
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(Map.of("error", "Transaction not found"),
-                    HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // Add an enum for transaction status
-    public enum TransactionStatus {
-        PROCESSING,
-        COMPLETED,
-        FAILED
     }
 
 
